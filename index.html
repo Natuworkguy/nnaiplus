@@ -1,0 +1,283 @@
+<html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NNAI Plus</title>
+  <link rel="icon" href="assets/favicon.png" type="image/png">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron&amp;display=swap" rel="stylesheet">
+  <link rel="manifest" href="/manifest.json">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 20px;
+      transition: background-color 0.5s ease;
+    }
+    body.dark-mode {
+      background-color: black;
+    }
+    button {
+      padding: 10px 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    .header {
+      align-items: center;
+      display: flex;
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 1000;
+      width: 200px;
+    }
+    .home-icon {
+      width: 40px;
+      height: 40px;
+      cursor: pointer;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 60px auto 20px;
+      background: #fff;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      border-radius: 10px;
+    }
+    .chat-icons {
+      width: 30px;
+      height: 30px;
+    }
+    .chat-box {
+      height: 400px;
+      overflow-y: scroll;
+      padding: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+    .input-container {
+      display: flex;
+      margin-top: 10px;
+    }
+    .dropdown-icon {
+      width: 10px;
+      height: 10px;
+    }
+    .chat-container {
+      text-align: center;
+    }
+    .chat-list {
+      cursor: pointer;
+    }
+    .message-input {
+      flex-grow: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .send-button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #007BFF;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-left: 10px;
+      font-family: Orbitron;
+    }
+    .clear-button {
+      padding: 10px 20px;
+      border: none;
+      background-color: #FF0000;
+      color: white;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-right: 10px;
+      font-family: Orbitron;
+    }
+    .message {
+      padding: 10px;
+      border-radius: 15px;
+      margin-bottom: 10px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .dmodebtn {
+      top: 20px;
+      right: 20px;
+      position: fixed;
+      z-index: 1000;
+      display: inline-block;
+      padding: 15px 25px;
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      text-decoration: none;
+      cursor: pointer;
+      border-radius: 50px;
+      border: none;
+      background-image: rgb(142, 247, 153);
+      color: rgb(0, 0, 0); 
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-family: Orbitron;
+    }
+    .dmodebtn:hover {  
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+      color: rgba(0, 0, 0, 0.15);
+    }
+    .dmodebtn:active {
+      transform: translateY(1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      color: black;
+    }
+    .dmodebtn:i {
+      margin-right: 8px;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+    }
+    .user-message {
+      text-align: left;
+      background-color: #f5deb3;
+    }
+    .bot-message {
+      text-align: right;
+      background-color: #e0e0e0;
+      font-family: Orbitron;
+    }
+    .banner {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 24px;
+      color: #78c0ff;
+      z-index: 1000;
+	  cursor: pointer;
+    }
+	.notava-text {
+	  text-align: center;
+	  color: blue;
+	}
+  </style>
+<body>
+  <div class="banner" onclick="window.location.reload();">NNAI Plus</div>
+  <div class="header">
+    <a onclick="window.location.reload();">
+      <img src="assets/favicon.png" alt="Home Icon" class="home-icon">
+    </a>
+    <button class="dmodebtn" id="toggleButton">Dark mode</button>
+  </div>
+  <div class="chat-container" id="chatContainer">
+    <div class="chat-box" id="chatBox"><div class="message user-message">hi</div><div class="message bot-message">Hi there! How can I help you today?
+</div></div>
+    <div class="input-container">
+      <button class="clear-button" id="clearButton">
+        <img src="assets/plus-icon.png" alt="New Chat" class="chat-icons">
+      </button>
+      <input type="text" class="message-input" id="messageInput" placeholder="Type a message...">
+      <button class="send-button" id="sendButton">
+        <img src="assets/send-icon.png" alt="Send Message" class="chat-icons">
+      </button>
+    </div>
+  </div>
+  <script>
+    const toggleButton = document.getElementById('toggleButton');
+    const body = document.body;
+    function checkDarkModeParam() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const darkModeEnabled = urlParams.get('darkmode') === 'true';
+      if (darkModeEnabled) {
+        body.classList.add('dark-mode');
+      }
+    }
+    function checkLogin() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const loggedIn = urlParams.get('login') === 'true';
+      if (!loggedIn) {
+        body.innerHTML = '<h1 class="notava-text">Not authenticated</h1><br><p class="notava-text">NNAI Plus is not available due to a malformed request.<br>Click <a href="https://techascending.com/siu#login-section">here</a> to log in.<p>'
+      }
+    }
+    checkLogin();
+    checkDarkModeParam();
+    toggleButton.addEventListener('click', () => {
+      body.classList.toggle('dark-mode');
+    });
+    let apiKey = '';
+    fetch('../info/api.key').then(response => response.text()).then(text => {
+      apiKey = text.trim();
+      console.log("API key loaded.");
+    }).catch(error => console.error('Error fetching API key:', error));
+    
+    async function sendRequest(message) {
+      const data = {
+        contents: [{
+          parts: [{
+            text: message
+          }]
+        }]
+      };
+      const headers = {
+        'Content-Type': 'application/json'
+      };
+      const url = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=' + apiKey;
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: headers,
+          body: JSON.stringify(data)
+        });
+        const output = await response.json();
+        return output.candidates[0].content.parts[0].text;
+      } catch (error) {
+        console.error('Error:', error);
+        return 'Error: Unable to fetch response';
+      }
+    }
+
+    function addMessage(message, isUser = true) {
+      var chatBox = document.getElementById('chatBox');
+      var messageDiv = document.createElement('div');
+      messageDiv.className = 'message ' + (isUser ? 'user-message' : 'bot-message');
+      messageDiv.textContent = message;
+      chatBox.appendChild(messageDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+      saveMessages();
+    }
+
+    function saveMessages() {
+      localStorage.setItem('chatMessages', document.getElementById('chatBox').innerHTML);
+    }
+    function loadMessages() {
+      var chatMessages = localStorage.getItem('chatMessages');
+      if (chatMessages) {
+        document.getElementById('chatBox').innerHTML = chatMessages;
+      }
+    }
+
+    function clearMessages() {
+      localStorage.removeItem('chatMessages');
+      document.getElementById('chatBox').innerHTML = '';
+    }
+    document.getElementById('sendButton').addEventListener('click', async function() {
+      var message = document.getElementById('messageInput').value;
+      if (message.trim() !== '') {
+        addMessage(message, true);
+        document.getElementById('messageInput').value = '';
+        const botResponse = await sendRequest(message);
+        addMessage(botResponse, false);
+      }
+    });
+    document.getElementById('messageInput').addEventListener('keypress', function(event) {
+      if (event.key === 'Enter') {
+        document.getElementById('sendButton').click();
+      }
+    });
+    document.getElementById('clearButton').addEventListener('click', function() {
+      clearMessages();
+    });
+    loadMessages();
+  </script>
+
+
+</body></html>
