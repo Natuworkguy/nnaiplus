@@ -194,7 +194,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const loggedIn = urlParams.get('login') === 'true';
       if (!loggedIn) {
-        body.innerHTML = '<h1 class="notava-text">Not authenticated</h1><br><p class="notava-text">NNAI Plus is not available due to a malformed request.<br>Click <a href="https://your.login.site.here/">here</a> to log in.<p>'
+        body.innerHTML = '<h1 class="notava-text">Not authenticated</h1><br><p class="notava-text">NNAI Plus is not available due to a malformed request.<br><b>Click <a href="https://your.login.site.here/">here</a> to log in.</b><p>'
       }
     }
     checkLogin();
