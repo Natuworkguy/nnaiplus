@@ -169,8 +169,7 @@
     <button class="dmodebtn" id="toggleButton">Dark mode</button>
   </div>
   <div class="chat-container" id="chatContainer">
-    <div class="chat-box" id="chatBox"><div class="message user-message">hi</div><div class="message bot-message">Hi there! How can I help you today?
-</div></div>
+  </div>
     <div class="input-container">
       <button class="clear-button" id="clearButton">
         <img src="assets/plus-icon.png" alt="New Chat" class="chat-icons">
@@ -195,7 +194,7 @@
       const urlParams = new URLSearchParams(window.location.search);
       const loggedIn = urlParams.get('login') === 'true';
       if (!loggedIn) {
-        body.innerHTML = '<h1 class="notava-text">Not authenticated</h1><br><p class="notava-text">NNAI Plus is not available due to a malformed request.<br>Click <a href="https://techascending.com/siu#login-section">here</a> to log in.<p>'
+        body.innerHTML = '<h1 class="notava-text">Not authenticated</h1><br><p class="notava-text">NNAI Plus is not available due to a malformed request.<br>Click <a href="https://your.login.site.here/">here</a> to log in.<p>'
       }
     }
     checkLogin();
